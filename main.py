@@ -4,38 +4,45 @@ from matplotlib import pyplot
 from pandas.plotting import scatter_matrix
 from sklearn import linear_model, metrics, model_selection
 
-## Create variable names to hold datasets
+# Create variable name to hold dataset
 
 url_anime = "https://raw.githubusercontent.com/DanielPosada330/Anime-Machine-Learning-Recommendation/main/anime.csv"
+names = ["anime_id", "name", "genre", "type", "rating", "episodes", "members", "Amount of Ratings",
+         "Objectively Good or Not"]
 
-url_ratings = "https://raw.githubusercontent.com/DanielPosada330/Anime-Machine-Learning-Recommendation/main/rating.csv"
+# Create dataframe to read csv file
 
-## Create dataframe to read csv file
+df_anime = pd.read_csv(url_anime, names=names, on_bad_lines="skip", delimiter=",")
 
-df_anime = pd.read_csv(url_anime, on_bad_lines="skip", delimiter=",")
-
-## Create model utilizing Logisitic Regression
+# Create model utilizing Logisitic Regression
 
 mylog_model = linear_model.LogisticRegression()
 
-## Assign dependent and indpendent variables from datasets
+# Assign dependent and indpendent variables from datasets
 
-y = df_anime.values[:, 5]
+# Dependent variable is rating of the anime
+df_anime.dropna()
+y = df_anime.values[:199, 8]
 
-X = (df_anime.values[:, 10])
+# Independent variables are amount of episodes, members and amount of ratings
 
-## Testing the datasets
+X = (df_anime.values[:199, 5:7])
+
+# Testing the datasets
 
 X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.3)
 
-## Train the model using .fit() method
+# X_train = X_train.reshape(-1, 1)
 
-mylog_model.fit(X, y)
+# y_train = y_train.reshape(-1, 1)
+# Train the model using .fit() method
 
-## Utilize the trained model to make a prediction on anime ratings
+mylog_model.fit(X_train, y_train)
 
-y_pred = mylog_model.predict(X)
+# Utilize the trained model to make a prediction on anime ratings
 
-## Acquire accuracy score based on prediction
+y_pred = mylog_model.predict(X_test)
+
+# Acquire accuracy score based on prediction
 
 print(metrics.accuracy_score(y_test, y_pred))
