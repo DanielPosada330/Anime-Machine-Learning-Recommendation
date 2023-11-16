@@ -14,11 +14,11 @@ names = ["anime_id", "name", "genre", "type", "rating", "episodes", "members", "
 
 df_anime = pd.read_csv(url_anime, names=names, on_bad_lines="skip", delimiter=",")
 
-# Create model utilizing Logisitic Regression
+# Create model utilizing Logistic Regression
 
 mylog_model = linear_model.LogisticRegression()
 
-# Assign dependent and indpendent variables from datasets
+# Assign dependent and independent variables from datasets
 
 # Dependent variable is rating of the anime
 df_anime.dropna()
@@ -46,3 +46,8 @@ y_pred = mylog_model.predict(X_test)
 # Acquire accuracy score based on prediction
 
 print(metrics.accuracy_score(y_test, y_pred))
+
+# Add histogram visualization
+
+df_anime.hist()
+pyplot.show()
