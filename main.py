@@ -1,9 +1,9 @@
 import pandas as pd
-import seaborn
 import seaborn as sns
+from IPython.core.display_functions import display
 from matplotlib import pyplot
-from pandas.plotting import scatter_matrix
 from sklearn import linear_model, metrics, model_selection
+from ipywidgets import widgets
 
 # Create variable name to hold dataset
 
@@ -63,3 +63,26 @@ pyplot.show()
 sns.set(style="whitegrid")
 sns.boxplot(data=df_anime, x="category", y="episodes")
 pyplot.show()
+
+
+# User interface start with input from user
+member_widget = widgets.FloatText(description='members:', value='0')
+ratings_widget = widgets.FloatText(description='amount of ratings:', value='0')
+episodes_widget = widgets.FloatText(description='episodes:', value='0')
+
+
+# Submit button to predict values based on logistic regression
+button_predict = widgets.Button( description='Submit' )
+button_ouput = widgets.Label(value='Enter your desired values and press the \"Submit\" button when ready.' )
+
+# Function to describe button action after being clicked
+def on_click_submit(b):
+    predicition = mylog_model.predict([[
+        member_widget.value, ratings_widget.value, episodes_widget.value]])
+    button_ouput.value='Prediction = '+ str(predicition[0])
+button_predict.on_click(on_click_submit)
+
+# Display text boxes and buttons inside a VBox
+vb=widgets.VBox([member_widget, ratings_widget, episodes_widget, button_predict,button_ouput])
+print('\033[1m' + 'Enter in values to make a prediction' + '\033[0m')
+display(vb)
