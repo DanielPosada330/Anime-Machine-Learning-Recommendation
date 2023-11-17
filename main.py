@@ -24,12 +24,11 @@ mylog_model = linear_model.LogisticRegression()
 # Dependent variable is rating of the anime
 
 y = df_anime[["category"]].copy()
-# .values[:, 8]
 
 # Independent variables are amount of episodes, members and amount of ratings
 
-X = df_anime.drop(columns=["anime_id", "name", "genre", "type", "category"])
-# (df_anime.values[:, 5:7])
+X = df_anime.drop(columns=["anime_id", "name", "genre", "type", "rating", "category"])
+
 # Testing the datasets
 
 X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.333, random_state=42)
