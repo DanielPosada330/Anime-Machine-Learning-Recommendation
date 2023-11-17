@@ -22,23 +22,22 @@ mylog_model = linear_model.LogisticRegression()
 # Assign dependent and independent variables from datasets
 
 # Dependent variable is rating of the anime
-df_anime.dropna()
-y = df_anime.values[:199, 8]
+
+y = df_anime[["category"]].copy()
+# .values[:, 8]
 
 # Independent variables are amount of episodes, members and amount of ratings
 
-X = (df_anime.values[:199, 5:7])
-
+X = df_anime.drop(columns=["anime_id", "name", "genre", "type", "category"])
+# (df_anime.values[:, 5:7])
 # Testing the datasets
 
-X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.3, random_state=42)
+X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.333, random_state=42)
 
-# X_train = X_train.reshape(-1, 1)
-
-# y_train = y_train.reshape(-1, 1)
+y_train_array, y_test_array = y_train['category'].values, y_test['category'].values
 # Train the model using .fit() method
 
-mylog_model.fit(X_train, y_train)
+mylog_model.fit(X_train, y_train_array)
 
 # Utilize the trained model to make a prediction on anime ratings
 
